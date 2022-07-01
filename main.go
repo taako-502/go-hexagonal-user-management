@@ -26,20 +26,26 @@ type Performance struct {
 	Score float64 `json:"score"`
 }
 
-func main() {
-	resp, err := http.Get("https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=https://hepere.com")
+func run_api(url string) ([]byte, error) {
+	resp, err := http.Get("https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=" + url)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
+		return nil, err
+	}
+	return body, nil
+}
+
+func main() {
+	body, err := run_api("https://hepere.com")
+	if err != nil {
 		log.Fatal(err)
 	}
 
-	var data Item // nil slice
-	//data := make([]Item, 0) のように要素数0の slice としても良い
-
+	var data Item
 	if err := json.Unmarshal(body, &data); err != nil {
 		log.Fatal(err)
 	}
