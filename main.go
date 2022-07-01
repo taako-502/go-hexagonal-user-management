@@ -9,8 +9,21 @@ import (
 )
 
 type Item struct {
-	Id            string `json:"id"`
-	CaptchaResult string `json:"captchaResult"`
+	Id               string           `json:"id"`
+	CaptchaResult    string           `json:"captchaResult"`
+	LighthouseResult LighthouseResult `json:"lighthouseResult"`
+}
+
+type LighthouseResult struct {
+	Categories Categories `json:"categories"`
+}
+
+type Categories struct {
+	Performance Performance `json:"performance"`
+}
+
+type Performance struct {
+	Score float64 `json:"score"`
 }
 
 func main() {
@@ -31,5 +44,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("%s: %s", data.Id, data.CaptchaResult)
+	fmt.Printf("%v: %v\n", data.Id, data.LighthouseResult.Categories.Performance.Score)
 }
