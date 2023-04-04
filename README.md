@@ -1,6 +1,6 @@
 # go-sample-api
 
-以下で実行する。
+以下のコマンドで実行する。
 ```
 go run main.go
 ```
