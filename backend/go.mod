@@ -1,4 +1,4 @@
-module github.com/taako-502/go-sample-api
+module go-sample-api
 
 go 1.21.3
 
