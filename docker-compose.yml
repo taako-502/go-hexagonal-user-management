@@ -1,0 +1,28 @@
+version: "3"
+services:
+  echo:
+    container_name: echo_server
+    build: .
+    ports:
+      - "1323:1323"
+    volumes:
+      - ./backend:/app
+    working_dir: /app
+    command: sh -c 'go mod tidy && air'
+  db:
+    container_name: echo_db_server
+    image: mariadb:10.10.2
+    volumes:
+      - data-volume:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE_NAME}
+      MYSQL_USER: ${DB_USER_NAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      TZ: "Asia/Tokyo"
+      command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+volumes:
+  data-volume:
