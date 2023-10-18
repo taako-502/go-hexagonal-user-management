@@ -1,0 +1,6 @@
+development:
+  dialect: mysql
+  datasource: root:password@tcp(localhost:3306)/dev?parseTime=true
+  dir: config/db/migrations
+  table: migrations
+  lock: false
