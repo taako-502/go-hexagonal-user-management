@@ -5,8 +5,8 @@
 以下のコマンドで実行する。
 
 ```bash
-$ cd backend
-$ go run server.go
+$ docker-compose build
+$ docker-compose up -d
 ```
 
 ## フロントエンド
