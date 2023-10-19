@@ -1,15 +1,15 @@
-package user
+package user_secondary_adapter
 
 import (
 	"database/sql"
-	"go-sample-api/application/user"
+	"go-sample-api/application/domain"
 )
 
-type MySQLUserRepository struct {
+type UserSecondaryAdapter struct {
   db *sql.DB
 }
 
-func (m *MySQLUserRepository) GetUserByID(id string) (*user.User, error) {
-  // MySQLとの通信ロジック
-  return &user.User{}, nil
+func (m *UserSecondaryAdapter)Create(user *domain.User) error {
+  return nil
 }
+

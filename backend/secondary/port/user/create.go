@@ -1,7 +1,9 @@
 package user
 
-import "go-sample-api/application/user"
+import (
+	"go-sample-api/application/domain"
+)
 
 type UserRepository interface {
-  GetUserByID(id string) (user.User, error)
+  Create(user *domain.User) (domain.User, error)
 }
