@@ -6,12 +6,21 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"gorm.io/gorm"
 )
 
-func Create(c echo.Context) error {
+type myDB struct {
+	*gorm.DB
+}
+
+func NewMyDB(db *gorm.DB) *myDB {
+	return &myDB{DB: db}
+}
+
+func (db *myDB)Create(c echo.Context) error {
 	user := new(domain.User)
 	c.Bind(user)
-	if err := user_service.Create(user); err != nil {
+	if err := user_service.Create(db.DB, user); err != nil {
 		return err
 	}
 

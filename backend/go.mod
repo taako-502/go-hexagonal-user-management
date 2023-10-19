@@ -4,7 +4,14 @@ go 1.21.3
 
 require (
 	github.com/gin-gonic/gin v1.8.1
+	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v4 v4.11.2
+)
+
+require (
+	github.com/go-sql-driver/mysql v1.7.0 // indirect
+	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/jinzhu/now v1.1.5 // indirect
 )
 
 require (
@@ -30,4 +37,6 @@ require (
 	golang.org/x/text v0.13.0 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
+	gorm.io/driver/mysql v1.5.2
+	gorm.io/gorm v1.25.5
 )

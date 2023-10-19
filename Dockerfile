@@ -12,8 +12,11 @@ COPY backend/go.sum ./
 RUN go mod download
 
 # ソースコードとairの設定ファイルのコピー
-COPY ./backend/ .
-COPY ./backend/.air.toml ./
+COPY backend/ .
+COPY backend/.air.toml ./
+
+# .envファイルのコピー
+COPY .env ./
 
 # airのインストール
 RUN go install github.com/cosmtrek/air@latest
