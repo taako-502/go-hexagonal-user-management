@@ -8,6 +8,7 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -17,14 +18,23 @@ func main() {
     loadEnv()
     // Echo API(https://echo.labstack.com/)
     e := echo.New()
+		// CORSの設定
+		e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+			AllowOrigins: []string{"http://localhost:3333"},
+			AllowMethods: []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
+			AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+			AllowCredentials: true,
+		}))
+		// ルーティング
     e.GET("/", func(c echo.Context) error {
-        return c.String(http.StatusOK, "Hello, World!")
+			return c.String(http.StatusOK, "Hello, World!")
     })
-    db := dbInit()
-    mydb := user_primary_adapter.NewMyDB(db)
+		db := dbInit()
+		mydb := user_primary_adapter.NewMyDB(db)
     e.POST("/user", mydb.Create)
-    e.Logger.Fatal(e.Start(":1323"))
-}
+		// サーバー起動
+		e.Logger.Fatal(e.Start(":1323"))
+	}
 
 func loadEnv() {
 	err := godotenv.Load(".env")
