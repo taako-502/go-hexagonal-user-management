@@ -3,6 +3,7 @@ package user_primary_adapter
 import (
 	"go-sample-api/application/domain"
 	user_service "go-sample-api/application/services/user"
+	user_secondary_adapter "go-sample-api/secondary/adapter/user"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -20,7 +21,8 @@ func NewMyDB(db *gorm.DB) *myDB {
 func (db *myDB)Create(c echo.Context) error {
 	user := new(domain.User)
 	c.Bind(user)
-	if err := user_service.Create(db.DB, user); err != nil {
+	a := user_secondary_adapter.NewUserSecondaryAdapter(db.DB)
+	if err := user_service.Create(a, user); err != nil {
 		return err
 	}
 
