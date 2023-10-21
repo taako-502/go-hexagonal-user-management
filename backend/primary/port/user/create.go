@@ -1,4 +1,4 @@
-package user
+package user_primary_port
 
 type UserRequest struct {
 	Username string `json:"username"`
