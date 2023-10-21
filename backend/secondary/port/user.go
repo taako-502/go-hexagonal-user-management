@@ -7,5 +7,6 @@ import (
 type UserRepository interface {
   Create(user *domain.User) error
 	FindAll() ([]domain.User, error)
+	Delete(id int) error
 }
 

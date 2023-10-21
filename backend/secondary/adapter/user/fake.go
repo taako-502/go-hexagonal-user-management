@@ -8,12 +8,14 @@ import (
 type fakeUserRepository struct {
 	insertUser map[*domain.User]error
 	findAllUser []domain.User
+	deleteUser map[int]error
 }
 
 func NewFakeUserRepository() secondary_port.UserRepository {
 	return &fakeUserRepository{
 		insertUser: map[*domain.User]error{},
 		findAllUser: []domain.User{},
+		deleteUser: map[int]error{},
 	}
 }
 
@@ -30,3 +32,11 @@ func (r *fakeUserRepository) FindAll() ([]domain.User, error) {
 	}
 	return users, nil
 }
+
+func (r *fakeUserRepository) Delete(id int) error {
+	if err := r.deleteUser[id]; err != nil {
+		return err
+	}
+	return nil
+}
+
