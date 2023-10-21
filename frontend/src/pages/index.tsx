@@ -44,6 +44,21 @@ export default function Home() {
     }
   }
 
+  const userDelete = async (id: number) => {
+    try {
+      axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_URL
+      await axios.delete(`/user/${id}`)
+      // 一旦画面をリロードする
+      window.location.reload()
+    } catch (error) {
+      console.error(error)
+      if (error instanceof Error) {
+        console.error(error.message)
+        setError(error.message)
+      }
+    }
+  }
+
   const handleSubmit = (event: any) => {
     event.preventDefault()
   }
@@ -87,8 +102,16 @@ export default function Home() {
       <ul>
         {users.map((user) => (
           <li key={user.id}>
-            <pre>
+            <pre className="mt-1">
               Name: {user.username}&#009;&#009;Email: {user.email}
+              <button
+                className="bg-gray-500 rounded-md px-1 py-[2px] ml-[1em]"
+                onClick={() => {
+                  userDelete(user.id as number)
+                }}
+              >
+                削除
+              </button>
             </pre>
           </li>
         ))}
