@@ -48,6 +48,7 @@ func main() {
 		mydb := user_primary_adapter.NewMyDB(db)
     e.GET("/user", mydb.FindAll)
     e.POST("/user", mydb.Create)
+		e.DELETE("/user/:id", mydb.Delete)
 		// サーバー起動
 		e.Logger.Fatal(e.Start(":1323"))
 	}
