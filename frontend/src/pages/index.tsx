@@ -1,11 +1,29 @@
 import { User } from '@/type/user.type'
 import axios from 'axios'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function Home() {
+  const [users, setUsers] = useState<User[]>([])
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_URL
+        const res = await axios.get('/user')
+        setUsers(res.data)
+      } catch (error) {
+        console.error(error)
+        if (error instanceof Error) {
+          console.error(error.message)
+          setError(error.message)
+        }
+      }
+    }
+    fetchUsers()
+  }, [])
 
   const save = async () => {
     const body: User = { username, email }
@@ -25,9 +43,7 @@ export default function Home() {
   }
 
   const handleSubmit = (event: any) => {
-    event.preventDefault() // フォーム送信をキャンセル
-    console.log('ボタンがクリックされましたが、送信はキャンセルされました')
-    // ここにその他の処理を追加
+    event.preventDefault()
   }
 
   return (
@@ -66,6 +82,15 @@ export default function Home() {
           save
         </button>
       </form>
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>
+            <pre>
+              Name: {user.username}&#009;&#009;Email: {user.email}
+            </pre>
+          </li>
+        ))}
+      </ul>
     </main>
   )
 }

@@ -2,6 +2,7 @@ package user_primary_adapter
 
 import (
 	user_service "go-sample-api/application/services/user"
+	user_primary_port "go-sample-api/primary/port/user"
 	user_secondary_adapter "go-sample-api/secondary/adapter/user"
 	"net/http"
 
@@ -15,5 +16,14 @@ func (db *myDB) FindAll(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, users)
+	var responses []user_primary_port.UserResponse
+	for _, user := range users {
+		responses = append(responses, user_primary_port.UserResponse{
+			Id: user.Id,
+			Username: user.Username,
+			Email: user.Email,
+		})
+	}
+
+	return c.JSON(http.StatusOK, responses)
 }
