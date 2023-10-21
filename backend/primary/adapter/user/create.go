@@ -13,7 +13,13 @@ import (
 
 func (db *myDB)Create(c echo.Context) error {
 	request := new(user_primary_port.UserRequest)
-	c.Bind(request)
+	if err := c.Bind(request); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+	}
+	// validation（https://echo.labstack.com/docs/request#validate-data）
+	if err := c.Validate(request); err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, "validation error")
+	}
 	user := &domain.User{
 		Username: request.Username,
 		Email: request.Email,

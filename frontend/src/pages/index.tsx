@@ -33,6 +33,8 @@ export default function Home() {
       setUsername('')
       setEmail('')
       setError('')
+      // 一旦画面をリロードする
+      window.location.reload()
     } catch (error) {
       console.error(error)
       if (error instanceof Error) {
@@ -49,7 +51,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center p-24">
       <h1 className="text-2xl">ユーザ管理画面</h1>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username" className="mr-[2em]">
             ユーザ名:
