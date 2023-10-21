@@ -1,7 +1,6 @@
 package user
 
 type UserRequest struct {
-  ID string
-	Username string
-	Email string
+	Username string `json:"username"`
+	Email string `json:"email"`
 }

@@ -8,10 +8,7 @@ export default function Home() {
   const [error, setError] = useState('')
 
   const save = async () => {
-    const body: User = {
-      Username: username,
-      Email: email,
-    }
+    const body: User = { username, email }
     try {
       axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_URL
       await axios.post('/user', body)
