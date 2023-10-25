@@ -10,7 +10,7 @@ import (
 
 func TestCreate(t *testing.T){
 	repository := user_secondary_adapter.NewFakeUserRepository()
-	u := NewUserService(nil, nil)
+	u := NewUserService(nil)
 	user := &domain.User {
 		Username:  "hogepiyo",
 		Email:     "test@test.com",
