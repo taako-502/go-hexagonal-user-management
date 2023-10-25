@@ -3,15 +3,14 @@ package user_primary_adapter
 import (
 	user_service "go-sample-api/application/services/user"
 	user_primary_port "go-sample-api/primary/port/user"
-	user_secondary_adapter "go-sample-api/secondary/adapter/user"
+	secondary_port "go-sample-api/secondary/port"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
 )
 
-func FindAll(u user_service.UserService) *echo.Echo {
+func FindAll(u user_service.UserService, a secondary_port.UserRepository) *echo.Echo {
 	u.Echo.GET("/user", func(c echo.Context) error {
-		a := user_secondary_adapter.NewUserSecondaryAdapter(u.DB)
 		users, err := u.FindAll(a)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())

@@ -6,5 +6,10 @@ import (
 )
 type UserService struct{
 	Echo *echo.Echo
-	DB *gorm.DB
+}
+
+func NewUserService(e *echo.Echo, db *gorm.DB) *UserService {
+	return &UserService{
+		Echo: e,
+	}
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	user_service "go-sample-api/application/services/user"
 	user_primary_adapter "go-sample-api/primary/adapter/user"
+	user_secondary_adapter "go-sample-api/secondary/adapter/user"
 	"net/http"
 	"os"
 
@@ -46,13 +47,11 @@ func main() {
 			return c.String(http.StatusOK, "Hello, World!")
     })
 		db := dbInit()
-		userSecvice := user_service.UserService{
-			Echo: e,
-			DB: db,
-		}
-		e = user_primary_adapter.FindAll(userSecvice)
-		e = user_primary_adapter.Create(userSecvice)
-		e = user_primary_adapter.Delete(userSecvice)
+		userSecvice := user_service.UserService{Echo: e}
+		userSecondaryAdapter := user_secondary_adapter.NewUserSecondaryAdapter(db)
+		e = user_primary_adapter.FindAll(userSecvice, userSecondaryAdapter)
+		e = user_primary_adapter.Create(userSecvice, userSecondaryAdapter)
+		e = user_primary_adapter.Delete(userSecvice, userSecondaryAdapter)
 		// サーバー起動
 		e.Logger.Fatal(e.Start(":1323"))
 	}
