@@ -37,7 +37,4 @@ func TestFindAll(t *testing.T){
 		assert.Equal(t, "test", users[0].Username)
 		assert.Equal(t, "test@test.com", users[0].Email)
 	})	
-
-
-
 }
