@@ -9,14 +9,17 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func (db *myDB) Delete(c echo.Context) error {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-    return echo.NewHTTPError(http.StatusBadRequest, "ID must be an integer")
-	}
-	a := user_secondary_adapter.NewUserSecondaryAdapter(db.DB)
-	if err := user_service.Delete(a , id); err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
-	}
-	return c.String(http.StatusOK, "OK")
+func Delete(u user_service.UserService) *echo.Echo {
+	u.Echo.DELETE("/user/:id", func(c echo.Context) error {
+		id, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, "ID must be an integer")
+		}
+		a := user_secondary_adapter.NewUserSecondaryAdapter(u.DB)
+		if err := u.Delete(a , id); err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		}
+		return c.String(http.StatusOK, "OK")
+	})
+	return u.Echo
 }

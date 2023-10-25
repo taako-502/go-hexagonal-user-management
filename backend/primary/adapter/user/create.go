@@ -11,27 +11,30 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func (db *myDB)Create(c echo.Context) error {
-	request := new(user_primary_port.UserRequest)
-	if err := c.Bind(request); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-	}
-	// validation（https://echo.labstack.com/docs/request#validate-data）
-	if err := c.Validate(request); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, "validation error")
-	}
-	user := &domain.User{
-		Username: request.Username,
-		Email: request.Email,
-	}
-	a := user_secondary_adapter.NewUserSecondaryAdapter(db.DB)
-	if err := user_service.Create(a, user); err != nil {
-		if errors.Is(err, user_service.UserDuplicateError) {
-			return echo.NewHTTPError(http.StatusConflict, err.Error())
-		} else {
-			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+func Create(u user_service.UserService)  *echo.Echo {
+	u.Echo.POST("/user", func(c echo.Context) error {
+		request := new(user_primary_port.UserRequest)
+		if err := c.Bind(request); err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
-	}
+		// validation（https://echo.labstack.com/docs/request#validate-data）
+		if err := c.Validate(request); err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, "validation error")
+		}
+		user := &domain.User{
+			Username: request.Username,
+			Email: request.Email,
+		}
+		a := user_secondary_adapter.NewUserSecondaryAdapter(u.DB)
+		if err := u.Create(a, user); err != nil {
+			if errors.Is(err, user_service.UserDuplicateError) {
+				return echo.NewHTTPError(http.StatusConflict, err.Error())
+			} else {
+				return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+			}
+		}
+		return c.String(http.StatusOK, "OK")
+	})
 
-	return c.String(http.StatusOK, "OK")
+	return u.Echo
 }

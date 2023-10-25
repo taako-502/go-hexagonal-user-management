@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	user_service "go-sample-api/application/services/user"
 	user_primary_adapter "go-sample-api/primary/adapter/user"
 	"net/http"
 	"os"
@@ -45,10 +46,13 @@ func main() {
 			return c.String(http.StatusOK, "Hello, World!")
     })
 		db := dbInit()
-		mydb := user_primary_adapter.NewMyDB(db)
-    e.GET("/user", mydb.FindAll)
-    e.POST("/user", mydb.Create)
-		e.DELETE("/user/:id", mydb.Delete)
+		userSecvice := user_service.UserService{
+			Echo: e,
+			DB: db,
+		}
+		e = user_primary_adapter.FindAll(userSecvice)
+		e = user_primary_adapter.Create(userSecvice)
+		e = user_primary_adapter.Delete(userSecvice)
 		// サーバー起動
 		e.Logger.Fatal(e.Start(":1323"))
 	}
