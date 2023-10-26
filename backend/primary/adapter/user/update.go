@@ -6,12 +6,17 @@ import (
 	user_service "go-sample-api/application/services/user"
 	secondary_port "go-sample-api/secondary/port"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
 
 func Update(u user_service.UserService, a secondary_port.UserRepository)  *echo.Echo {
-	u.Echo.PATCH("/user", func(c echo.Context) error {
+	u.Echo.PATCH("/user/:id", func(c echo.Context) error {
+		id, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, "ID must be an integer")
+		}
 		request := new(UserRequest)
 		if err := c.Bind(request); err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, err.Error())
@@ -21,6 +26,7 @@ func Update(u user_service.UserService, a secondary_port.UserRepository)  *echo.
 			return echo.NewHTTPError(http.StatusBadRequest, "validation error")
 		}
 		user := &domain.User{
+			Id: id,
 			Username: request.Username,
 			Email: request.Email,
 		}

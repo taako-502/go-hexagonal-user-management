@@ -35,9 +35,6 @@ func main() {
 		}))
 		// ルーティング（https://echo.labstack.com/docs/routing）
 		// TODO: ルーティングの設定を別ファイルに移動する
-    e.GET("/", func(c echo.Context) error {
-			return c.String(http.StatusOK, "Hello, World!")
-    })
 		db := dbInit()
 		userSecvice := user_service.UserService{Echo: e}
 		userSecondaryAdapter := user_secondary_adapter.NewUserSecondaryAdapter(db)
