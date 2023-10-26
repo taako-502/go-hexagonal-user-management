@@ -15,7 +15,16 @@ export default function Home() {
     const fetchUsers = async () => {
       try {
         const res = await axiosInstance.get('/user')
-        setNewUsers(res.data)
+        const users: User[] = res.data
+        setNewUsers(users)
+        const editUsers: { [key: number]: User } = users.reduce(
+          (acc, user) => ({
+            ...acc,
+            [user.id as number]: user,
+          }),
+          {},
+        )
+        setEditUsers(editUsers)
       } catch (error) {
         console.error(error)
         if (error instanceof Error) {
@@ -25,7 +34,7 @@ export default function Home() {
       }
     }
     fetchUsers()
-  }, [axiosInstance])
+  }, [])
 
   const newUser = async () => {
     const body: User = { username, email }
