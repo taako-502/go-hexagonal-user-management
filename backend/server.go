@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	user_service "go-sample-api/application/services/user"
+	"go-sample-api/config"
 	user_primary_adapter "go-sample-api/primary/adapter/user"
 	user_secondary_adapter "go-sample-api/secondary/adapter/user"
 	"net/http"
@@ -16,16 +17,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type customValidator struct {
-	validator *validator.Validate
-}
 
-func (cv *customValidator) Validate(i interface{}) error {
-  if err := cv.validator.Struct(i); err != nil {
-    return err
-  }
-  return nil
-}
 
 func main() {
     // 環境変数の読み込み
@@ -33,7 +25,7 @@ func main() {
     // Echo API（https://echo.labstack.com/）
     e := echo.New()
 		// validation（https://echo.labstack.com/docs/request#validate-data）
-		e.Validator = &customValidator{validator: validator.New()}
+		e.Validator = &config.CustomValidator{Validator: validator.New()}
 		// CORSの設定（https://echo.labstack.com/docs/middleware/cors）
 		e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 			AllowOrigins: []string{"http://localhost:3333"},

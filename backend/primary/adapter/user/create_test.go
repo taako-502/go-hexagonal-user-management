@@ -3,6 +3,7 @@ package user_primary_adapter
 import (
 	"bytes"
 	user_service "go-sample-api/application/services/user"
+	primary_adapter "go-sample-api/primary/adapter"
 	user_secondary_adapter "go-sample-api/secondary/adapter/user"
 	"net/http"
 	"net/http/httptest"
@@ -14,7 +15,7 @@ import (
 
 func TestCreate(t *testing.T){
 	// Setup
-	e := echo.New()
+	e := primary_adapter.SetupEchoForTest()
 	u := user_service.NewUserService(e)
 	fake := user_secondary_adapter.NewFakeUserRepository()
 	e = Create(u, fake)
