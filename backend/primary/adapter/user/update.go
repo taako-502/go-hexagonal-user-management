@@ -1,7 +1,6 @@
 package user_primary_adapter
 
 import (
-	"errors"
 	"go-sample-api/application/domain"
 	user_service "go-sample-api/application/services/user"
 	secondary_port "go-sample-api/secondary/port"
@@ -31,11 +30,7 @@ func Update(u user_service.UserService, a secondary_port.UserRepository)  *echo.
 			Email: request.Email,
 		}
 		if err := u.Update(a, user); err != nil {
-			if errors.Is(err, user_service.UserDuplicateError) {
-				return echo.NewHTTPError(http.StatusConflict, err.Error())
-			} else {
-				return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
-			}
+			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 		}
 		return c.String(http.StatusOK, "OK")
 	})
