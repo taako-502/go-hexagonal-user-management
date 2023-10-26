@@ -188,9 +188,7 @@ export default function Home() {
               {editMode.get(user.id as number) && (
                 <button
                   className="bg-gray-500 rounded-md px-1 py-[2px] ml-[1em]"
-                  onClick={() => {
-                    update(user.id as number)
-                  }}
+                  onClick={() => update(user.id as number)}
                 >
                   Update
                 </button>
