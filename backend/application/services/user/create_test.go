@@ -10,10 +10,10 @@ import (
 
 func TestCreate(t *testing.T){
 	repository := user_secondary_adapter.NewFakeUserRepository()
+	u := NewUserService(nil)
 	user := &domain.User {
 		Username:  "hogepiyo",
 		Email:     "test@test.com",
 	}
-
-	require.NoError(t, Create(repository, user))
+	require.NoError(t, u.Create(repository, user))
 }

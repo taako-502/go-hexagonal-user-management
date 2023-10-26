@@ -9,5 +9,6 @@ import (
 
 func TestDelete(t *testing.T){
 	repository := user_secondary_adapter.NewFakeUserRepository()
-	require.NoError(t, Delete(repository, 1))
+	u := NewUserService(nil)
+	require.NoError(t, u.Delete(repository, 1))
 }
