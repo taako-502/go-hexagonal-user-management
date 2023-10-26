@@ -1,5 +1,5 @@
+import useAxios from '@/hooks/useAxios'
 import { User } from '@/type/user.type'
-import axios from 'axios'
 import { useEffect, useState } from 'react'
 
 export default function Home() {
@@ -7,12 +7,12 @@ export default function Home() {
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
+  const axiosInstance = useAxios()
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_URL
-        const res = await axios.get('/user')
+        const res = await axiosInstance.get('/user')
         setUsers(res.data)
       } catch (error) {
         console.error(error)
@@ -23,13 +23,12 @@ export default function Home() {
       }
     }
     fetchUsers()
-  }, [])
+  }, [axiosInstance])
 
   const save = async () => {
     const body: User = { username, email }
     try {
-      axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_URL
-      await axios.post('/user', body)
+      await axiosInstance.post('/user', body)
       setUsername('')
       setEmail('')
       setError('')
@@ -46,8 +45,7 @@ export default function Home() {
 
   const userDelete = async (id: number) => {
     try {
-      axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_URL
-      await axios.delete(`/user/${id}`)
+      await axiosInstance.delete(`/user/${id}`)
       // 一旦画面をリロードする
       window.location.reload()
     } catch (error) {
