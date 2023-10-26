@@ -1,17 +1,21 @@
 package user_primary_adapter
 
 import (
-	"errors"
 	"go-sample-api/application/domain"
 	user_service "go-sample-api/application/services/user"
 	secondary_port "go-sample-api/secondary/port"
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
 
-func Create(u user_service.UserService, a secondary_port.UserRepository)  *echo.Echo {
-	u.Echo.POST("/user", func(c echo.Context) error {
+func Update(u user_service.UserService, a secondary_port.UserRepository)  *echo.Echo {
+	u.Echo.PATCH("/user/:id", func(c echo.Context) error {
+		id, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, "ID must be an integer")
+		}
 		request := new(UserRequest)
 		if err := c.Bind(request); err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, err.Error())
@@ -21,15 +25,12 @@ func Create(u user_service.UserService, a secondary_port.UserRepository)  *echo.
 			return echo.NewHTTPError(http.StatusBadRequest, "validation error")
 		}
 		user := &domain.User{
+			Id: id,
 			Username: request.Username,
 			Email: request.Email,
 		}
-		if err := u.Create(a, user); err != nil {
-			if errors.Is(err, user_service.UserDuplicateError) {
-				return echo.NewHTTPError(http.StatusConflict, err.Error())
-			} else {
-				return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
-			}
+		if err := u.Update(a, user); err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 		}
 		return c.String(http.StatusOK, "OK")
 	})

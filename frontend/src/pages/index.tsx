@@ -1,19 +1,30 @@
 import useAxios from '@/hooks/useAxios'
 import { User } from '@/type/user.type'
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 
 export default function Home() {
-  const [users, setUsers] = useState<User[]>([])
+  const [newUsers, setNewUsers] = useState<User[]>([])
+  const [editUsers, setEditUsers] = useState<{ [key: number]: User }>({})
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
+  const [editMode, setEditMode] = useState<Map<number, boolean>>(new Map())
   const axiosInstance = useAxios()
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const res = await axiosInstance.get('/user')
-        setUsers(res.data)
+        const users: User[] = res.data
+        setNewUsers(users)
+        const editUsers: { [key: number]: User } = users.reduce(
+          (acc, user) => ({
+            ...acc,
+            [user.id as number]: user,
+          }),
+          {},
+        )
+        setEditUsers(editUsers)
       } catch (error) {
         console.error(error)
         if (error instanceof Error) {
@@ -23,12 +34,33 @@ export default function Home() {
       }
     }
     fetchUsers()
-  }, [axiosInstance])
+  }, [])
 
-  const save = async () => {
+  const newUser = async () => {
     const body: User = { username, email }
     try {
       await axiosInstance.post('/user', body)
+      setUsername('')
+      setEmail('')
+      setError('')
+      // 一旦画面をリロードする
+      window.location.reload()
+    } catch (error) {
+      console.error(error)
+      if (error instanceof Error) {
+        console.error(error.message)
+        setError(error.message)
+      }
+    }
+  }
+
+  const update = async (id: number) => {
+    const body: User = {
+      username: editUsers[id].username || '',
+      email: editUsers[id].email || '',
+    }
+    try {
+      await axiosInstance.patch(`/user/${id}`, body)
       setUsername('')
       setEmail('')
       setError('')
@@ -59,6 +91,14 @@ export default function Home() {
 
   const handleSubmit = (event: any) => {
     event.preventDefault()
+  }
+
+  const toggleEditMode = (id: number) => {
+    setEditMode((prev) => {
+      const newEditMode = new Map(prev)
+      newEditMode.set(id, !newEditMode.get(id))
+      return newEditMode
+    })
   }
 
   return (
@@ -92,23 +132,81 @@ export default function Home() {
         <div className="text-red-500">{error}</div>
         <button
           className="bg-blue-500 text-white cursor-pointer rounded-md p-2 mt-[1em]"
-          onClick={save}
+          onClick={newUser}
         >
           save
         </button>
       </form>
       <ul>
-        {users.map((user) => (
+        {newUsers.map((user) => (
           <li key={user.id}>
             <pre className="mt-1">
-              Name: {user.username}&#009;&#009;Email: {user.email}
+              {editMode.get(user.id as number) ? (
+                <span>
+                  <label htmlFor="edit_username" className="mr-[2em]">
+                    Name:
+                  </label>
+                  <input
+                    id="edit_username"
+                    type="text"
+                    className="border bg-gray-600 border-gray-400 rounded-md p-2 mt-[8px]"
+                    value={editUsers[user.id as number]?.username || ''}
+                    onChange={(e) =>
+                      setEditUsers({
+                        ...editUsers,
+                        [user.id as number]: {
+                          ...editUsers[user.id as number],
+                          username: e.target.value,
+                        },
+                      })
+                    }
+                  />
+                  <label htmlFor="edit_email" className="mr-[2em]">
+                    Email:
+                  </label>
+                  <input
+                    id="edit_email"
+                    type="text"
+                    className="border bg-gray-600 border-gray-400 rounded-md p-2 mt-[8px]"
+                    value={editUsers[user.id as number]?.email || ''}
+                    onChange={(e) =>
+                      setEditUsers({
+                        ...editUsers,
+                        [user.id as number]: {
+                          ...editUsers[user.id as number],
+                          email: e.target.value,
+                        },
+                      })
+                    }
+                  />
+                </span>
+              ) : (
+                <Fragment>
+                  Name: {user.username}&#009;&#009;Email: {user.email}
+                </Fragment>
+              )}
+
+              <button
+                className="bg-gray-500 rounded-md px-1 py-[2px] ml-[1em]"
+                onClick={() => toggleEditMode(user.id as number)}
+              >
+                {editMode.get(user.id as number) ? 'Cancel' : 'Edit'}
+              </button>
+              {editMode.get(user.id as number) && (
+                <button
+                  className="bg-gray-500 rounded-md px-1 py-[2px] ml-[1em]"
+                  onClick={() => update(user.id as number)}
+                >
+                  Update
+                </button>
+              )}
               <button
                 className="bg-gray-500 rounded-md px-1 py-[2px] ml-[1em]"
                 onClick={() => {
                   userDelete(user.id as number)
                 }}
               >
-                削除
+                Delete
               </button>
             </pre>
           </li>
