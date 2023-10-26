@@ -94,9 +94,6 @@ export default function Home() {
     })
   }
 
-  // 1つでも編集モードが有効な場合にtrueとなる
-  const someEditModeIsActive = Array.from(editMode.values()).some(Boolean)
-
   return (
     <main className="flex min-h-screen flex-col items-center p-24">
       <h1 className="text-2xl">ユーザ管理画面</h1>
@@ -111,7 +108,6 @@ export default function Home() {
             className="border bg-gray-600 border-gray-400 rounded-md p-2 mt-[8px]"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            disabled={someEditModeIsActive}
           />
         </div>
         <div>
@@ -124,7 +120,6 @@ export default function Home() {
             className="border bg-gray-600 border-gray-400 rounded-md p-2 mt-[8px]"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            disabled={someEditModeIsActive}
           />
         </div>
         <div className="text-red-500">{error}</div>
