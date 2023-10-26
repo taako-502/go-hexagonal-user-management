@@ -7,6 +7,7 @@ import (
 
 type fakeUserRepository struct {
 	insertUser map[*domain.User]error
+	updateUser map[*domain.User]error
 	findAllUser []domain.User
 	deleteUser map[int]error
 }
@@ -14,6 +15,7 @@ type fakeUserRepository struct {
 func NewFakeUserRepository() secondary_port.UserRepository {
 	return &fakeUserRepository{
 		insertUser: map[*domain.User]error{},
+		updateUser: map[*domain.User]error{},
 		findAllUser: []domain.User{},
 		deleteUser: map[int]error{},
 	}
@@ -21,6 +23,13 @@ func NewFakeUserRepository() secondary_port.UserRepository {
 
 func (r *fakeUserRepository) Create(u *domain.User) error {
 	if err := r.insertUser[u]; err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *fakeUserRepository) Update(u *domain.User) error {
+	if err := r.updateUser[u]; err != nil {
 		return err
 	}
 	return nil

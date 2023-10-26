@@ -1,4 +1,4 @@
-package user_primary_port
+package user_primary_adapter
 
 type UserResponse struct{
 	Id int `json:"id"`

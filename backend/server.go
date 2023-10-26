@@ -41,8 +41,9 @@ func main() {
 		db := dbInit()
 		userSecvice := user_service.UserService{Echo: e}
 		userSecondaryAdapter := user_secondary_adapter.NewUserSecondaryAdapter(db)
-		e = user_primary_adapter.FindAll(userSecvice, userSecondaryAdapter)
 		e = user_primary_adapter.Create(userSecvice, userSecondaryAdapter)
+		e = user_primary_adapter.Update(userSecvice, userSecondaryAdapter)
+		e = user_primary_adapter.FindAll(userSecvice, userSecondaryAdapter)
 		e = user_primary_adapter.Delete(userSecvice, userSecondaryAdapter)
 		// サーバー起動
 		e.Logger.Fatal(e.Start(":1323"))
