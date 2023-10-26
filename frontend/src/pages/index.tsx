@@ -25,7 +25,7 @@ export default function Home() {
     fetchUsers()
   }, [axiosInstance])
 
-  const save = async () => {
+  const newUser = async () => {
     const body: User = { username, email }
     try {
       await axiosInstance.post('/user', body)
@@ -92,7 +92,7 @@ export default function Home() {
         <div className="text-red-500">{error}</div>
         <button
           className="bg-blue-500 text-white cursor-pointer rounded-md p-2 mt-[1em]"
-          onClick={save}
+          onClick={newUser}
         >
           save
         </button>
@@ -108,7 +108,7 @@ export default function Home() {
                   userDelete(user.id as number)
                 }}
               >
-                削除
+                Delete
               </button>
             </pre>
           </li>
