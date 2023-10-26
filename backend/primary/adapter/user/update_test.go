@@ -18,7 +18,7 @@ func TestUpdate(t *testing.T){
 	e := primary_adapter.SetupEchoForTest()
 	u := user_service.NewUserService(e)
 	fake := user_secondary_adapter.NewFakeUserRepository()
-	e = Create(u, fake)
+	e = Update(u, fake)
 	reqJSON := `{"username": "test", "email": "test@example.com"}`
 	req := httptest.NewRequest(http.MethodPatch, "/user/1", bytes.NewBufferString(reqJSON))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON) 
