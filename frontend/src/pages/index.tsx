@@ -4,9 +4,7 @@ import { Fragment, useEffect, useState } from 'react'
 
 export default function Home() {
   const [newUsers, setNewUsers] = useState<User[]>([])
-  const [editUsers, setEditUsers] = useState<{
-    [key: number]: { username: string; email: string }
-  }>({})
+  const [editUsers, setEditUsers] = useState<{ [key: number]: User }>({})
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
