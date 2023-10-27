@@ -1,5 +1,7 @@
 # go-hexagonal-user-management
 
+元の記事： https://ap-ep.com/go-hexagonal/
+
 ## バックエンド
 
 以下のコマンドで実行する。
