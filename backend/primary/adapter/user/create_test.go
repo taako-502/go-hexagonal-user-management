@@ -2,9 +2,9 @@ package user_primary_adapter
 
 import (
 	"bytes"
-	user_service "go-sample-api/application/services/user"
-	primary_adapter "go-sample-api/primary/adapter"
-	user_secondary_adapter "go-sample-api/secondary/adapter/user"
+	user_service "go-hexagonal-user-management/core/services/user"
+	primary_adapter "go-hexagonal-user-management/primary/adapter"
+	user_secondary_adapter "go-hexagonal-user-management/secondary/adapter/user"
 	"net/http"
 	"net/http/httptest"
 	"testing"

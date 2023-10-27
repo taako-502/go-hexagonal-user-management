@@ -1,7 +1,7 @@
 package user_secondary_adapter
 
 import (
-	"go-sample-api/application/domain"
+	"go-hexagonal-user-management/core/domain"
 
 	"github.com/go-sql-driver/mysql"
 )

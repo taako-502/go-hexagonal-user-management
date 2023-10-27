@@ -1,8 +1,8 @@
 package user_primary_adapter
 
 import (
-	user_service "go-sample-api/application/services/user"
-	secondary_port "go-sample-api/secondary/port"
+	user_service "go-hexagonal-user-management/core/services/user"
+	secondary_port "go-hexagonal-user-management/secondary/port"
 	"net/http"
 
 	"github.com/labstack/echo/v4"

@@ -2,8 +2,8 @@ package user_service
 
 import (
 	"errors"
-	"go-sample-api/application/domain"
-	secondary_port "go-sample-api/secondary/port"
+	"go-hexagonal-user-management/core/domain"
+	secondary_port "go-hexagonal-user-management/secondary/port"
 )
 
 func (u UserService)FindAll(a secondary_port.UserRepository) ([]domain.User, error) {

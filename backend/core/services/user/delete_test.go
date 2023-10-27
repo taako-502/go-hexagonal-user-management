@@ -1,7 +1,7 @@
 package user_service
 
 import (
-	user_secondary_adapter "go-sample-api/secondary/adapter/user"
+	user_secondary_adapter "go-hexagonal-user-management/secondary/adapter/user"
 	"testing"
 
 	"github.com/stretchr/testify/require"

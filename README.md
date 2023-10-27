@@ -1,4 +1,4 @@
-# go-sample-api
+# go-hexagonal-user-management
 
 ## バックエンド
 

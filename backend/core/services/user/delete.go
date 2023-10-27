@@ -1,7 +1,7 @@
 package user_service
 
 import (
-	secondary_port "go-sample-api/secondary/port"
+	secondary_port "go-hexagonal-user-management/secondary/port"
 )
 
 func (u UserService)Delete(a secondary_port.UserRepository, id int) error {

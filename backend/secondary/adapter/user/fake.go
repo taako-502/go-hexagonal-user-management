@@ -1,8 +1,8 @@
 package user_secondary_adapter
 
 import (
-	"go-sample-api/application/domain"
-	secondary_port "go-sample-api/secondary/port"
+	"go-hexagonal-user-management/core/domain"
+	secondary_port "go-hexagonal-user-management/secondary/port"
 )
 
 type fakeUserRepository struct {

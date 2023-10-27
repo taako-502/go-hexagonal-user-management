@@ -1,4 +1,4 @@
-module go-sample-api
+module go-hexagonal-user-management
 
 go 1.21.3
 

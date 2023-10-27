@@ -1,7 +1,7 @@
 package user_secondary_adapter
 
 import (
-	secondary_port "go-sample-api/secondary/port"
+	secondary_port "go-hexagonal-user-management/secondary/port"
 
 	"gorm.io/gorm"
 )

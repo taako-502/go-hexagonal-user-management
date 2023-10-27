@@ -1,7 +1,7 @@
 package secondary_port
 
 import (
-	"go-sample-api/application/domain"
+	"go-hexagonal-user-management/core/domain"
 )
 
 type UserRepository interface {

@@ -2,9 +2,9 @@ package user_service
 
 import (
 	"errors"
-	"go-sample-api/application/domain"
-	user_secondary_adapter "go-sample-api/secondary/adapter/user"
-	secondary_port "go-sample-api/secondary/port"
+	"go-hexagonal-user-management/core/domain"
+	user_secondary_adapter "go-hexagonal-user-management/secondary/adapter/user"
+	secondary_port "go-hexagonal-user-management/secondary/port"
 )
 
 func (u UserService)Create(a secondary_port.UserRepository, user *domain.User) error {

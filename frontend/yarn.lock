@@ -1913,9 +1913,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"go-sample-api@workspace:.":
+"go-hexagonal-user-management@workspace:.":
   version: 0.0.0-use.local
-  resolution: "go-sample-api@workspace:."
+  resolution: "go-hexagonal-user-management@workspace:."
   dependencies:
     "@types/node": ^20
     "@types/react": ^18

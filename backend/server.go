@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	user_service "go-sample-api/application/services/user"
-	"go-sample-api/config"
-	user_primary_adapter "go-sample-api/primary/adapter/user"
-	user_secondary_adapter "go-sample-api/secondary/adapter/user"
+	"go-hexagonal-user-management/config"
+	user_service "go-hexagonal-user-management/core/services/user"
+	user_primary_adapter "go-hexagonal-user-management/primary/adapter/user"
+	user_secondary_adapter "go-hexagonal-user-management/secondary/adapter/user"
 	"net/http"
 	"os"
 

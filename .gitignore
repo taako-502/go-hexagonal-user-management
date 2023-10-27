@@ -2,4 +2,4 @@
 backend/tmp/build-errors.log
 backend/main
 backend/tmp/main
-backend/go-sample-api
+backend/go-hexagonal-user-management

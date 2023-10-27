@@ -1,6 +1,6 @@
 package user_secondary_adapter
 
-import "go-sample-api/application/domain"
+import "go-hexagonal-user-management/core/domain"
 
 func (a *userSecondaryAdapter) FindAll() ([]domain.User, error) {
 	var users []domain.User

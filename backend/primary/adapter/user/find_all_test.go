@@ -2,9 +2,9 @@ package user_primary_adapter
 
 import (
 	"encoding/json"
-	"go-sample-api/application/domain"
-	user_service "go-sample-api/application/services/user"
-	user_secondary_adapter "go-sample-api/secondary/adapter/user"
+	"go-hexagonal-user-management/core/domain"
+	user_service "go-hexagonal-user-management/core/services/user"
+	user_secondary_adapter "go-hexagonal-user-management/secondary/adapter/user"
 	"net/http"
 	"net/http/httptest"
 	"testing"
