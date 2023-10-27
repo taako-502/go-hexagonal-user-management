@@ -6,18 +6,18 @@ import (
 )
 
 type fakeUserRepository struct {
-	insertUser map[*domain.User]error
-	updateUser map[*domain.User]error
+	insertUser  map[*domain.User]error
+	updateUser  map[*domain.User]error
 	findAllUser []domain.User
-	deleteUser map[int]error
+	deleteUser  map[int]error
 }
 
 func NewFakeUserRepository() secondary_port.UserRepository {
 	return &fakeUserRepository{
-		insertUser: map[*domain.User]error{},
-		updateUser: map[*domain.User]error{},
+		insertUser:  map[*domain.User]error{},
+		updateUser:  map[*domain.User]error{},
 		findAllUser: []domain.User{},
-		deleteUser: map[int]error{},
+		deleteUser:  map[int]error{},
 	}
 }
 
@@ -48,4 +48,3 @@ func (r *fakeUserRepository) Delete(id int) error {
 	}
 	return nil
 }
-

@@ -14,13 +14,13 @@ func FindAll(u user_service.UserService, a secondary_port.UserRepository) *echo.
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 		}
-	
+
 		var responses []UserResponse
 		for _, user := range users {
 			responses = append(responses, UserResponse{
-				Id: user.Id,
+				Id:       user.Id,
 				Username: user.Username,
-				Email: user.Email,
+				Email:    user.Email,
 			})
 		}
 		return c.JSON(http.StatusOK, responses)

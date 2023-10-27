@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestDelete(t *testing.T){
+func TestDelete(t *testing.T) {
 	// Setup
 	e := echo.New()
 	u := user_service.NewUserService(e)
@@ -21,13 +21,13 @@ func TestDelete(t *testing.T){
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	c.SetPath("/user/1")
-	
-	t.Run("Success", func(t *testing.T){
+
+	t.Run("Success", func(t *testing.T) {
 		// ハンドラーを呼び出す
 		e.Router().Find(http.MethodDelete, "/user/1", c) // 変数にすること
 		handler := c.Handler()
 		assert.NoError(t, handler(c))
 		// レスポンスを検証する
 		assert.Equal(t, http.StatusOK, rec.Code)
-	})	
+	})
 }

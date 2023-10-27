@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestFindAll(t *testing.T){
+func TestFindAll(t *testing.T) {
 	// Setup
 	e := echo.New()
 	u := user_service.NewUserService(e)
@@ -23,8 +23,8 @@ func TestFindAll(t *testing.T){
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	c.SetPath("/user")
-	
-	t.Run("Success", func(t *testing.T){
+
+	t.Run("Success", func(t *testing.T) {
 		// ハンドラーを呼び出す
 		e.Router().Find(http.MethodGet, "/user", c)
 		handler := c.Handler()
@@ -36,5 +36,5 @@ func TestFindAll(t *testing.T){
 		assert.EqualValues(t, 1, len(users))
 		assert.Equal(t, "test", users[0].Username)
 		assert.Equal(t, "test@test.com", users[0].Email)
-	})	
+	})
 }

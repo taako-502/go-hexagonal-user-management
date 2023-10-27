@@ -15,7 +15,7 @@ func Delete(u user_service.UserService, a secondary_port.UserRepository) *echo.E
 		if err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, "ID must be an integer")
 		}
-		if err := u.Delete(a , id); err != nil {
+		if err := u.Delete(a, id); err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 		}
 		return c.String(http.StatusOK, "OK")

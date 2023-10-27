@@ -7,8 +7,8 @@ type CustomValidator struct {
 }
 
 func (cv *CustomValidator) Validate(i interface{}) error {
-  if err := cv.Validator.Struct(i); err != nil {
-    return err
-  }
-  return nil
+	if err := cv.Validator.Struct(i); err != nil {
+		return err
+	}
+	return nil
 }

@@ -5,7 +5,7 @@ import (
 	secondary_port "go-hexagonal-user-management/secondary/port"
 )
 
-func (u UserService)Update(a secondary_port.UserRepository, user *domain.User) error {
+func (u UserService) Update(a secondary_port.UserRepository, user *domain.User) error {
 	if err := a.Update(user); err != nil {
 		return err
 	}

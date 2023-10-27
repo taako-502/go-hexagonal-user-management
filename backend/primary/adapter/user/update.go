@@ -10,7 +10,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func Update(u user_service.UserService, a secondary_port.UserRepository)  *echo.Echo {
+func Update(u user_service.UserService, a secondary_port.UserRepository) *echo.Echo {
 	u.Echo.PATCH("/user/:id", func(c echo.Context) error {
 		id, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
@@ -25,9 +25,9 @@ func Update(u user_service.UserService, a secondary_port.UserRepository)  *echo.
 			return echo.NewHTTPError(http.StatusBadRequest, "validation error")
 		}
 		user := &domain.User{
-			Id: id,
+			Id:       id,
 			Username: request.Username,
-			Email: request.Email,
+			Email:    request.Email,
 		}
 		if err := u.Update(a, user); err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())

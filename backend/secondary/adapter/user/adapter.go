@@ -5,8 +5,9 @@ import (
 
 	"gorm.io/gorm"
 )
+
 type userSecondaryAdapter struct {
-  Db *gorm.DB
+	Db *gorm.DB
 }
 
 func NewUserSecondaryAdapter(db *gorm.DB) secondary_port.UserRepository {

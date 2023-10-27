@@ -10,7 +10,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func Create(u user_service.UserService, a secondary_port.UserRepository)  *echo.Echo {
+func Create(u user_service.UserService, a secondary_port.UserRepository) *echo.Echo {
 	u.Echo.POST("/user", func(c echo.Context) error {
 		request := new(UserRequest)
 		if err := c.Bind(request); err != nil {
@@ -22,7 +22,7 @@ func Create(u user_service.UserService, a secondary_port.UserRepository)  *echo.
 		}
 		user := &domain.User{
 			Username: request.Username,
-			Email: request.Email,
+			Email:    request.Email,
 		}
 		if err := u.Create(a, user); err != nil {
 			if errors.Is(err, user_service.UserDuplicateError) {

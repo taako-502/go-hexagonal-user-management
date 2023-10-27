@@ -6,7 +6,7 @@ import (
 	secondary_port "go-hexagonal-user-management/secondary/port"
 )
 
-func (u UserService)FindAll(a secondary_port.UserRepository) ([]domain.User, error) {
+func (u UserService) FindAll(a secondary_port.UserRepository) ([]domain.User, error) {
 	users, err := a.FindAll()
 	if errors.Is(err, UserNotFoundError) {
 		return nil, UserNotFoundError

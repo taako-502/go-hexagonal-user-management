@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestFindAll(t *testing.T){
+func TestFindAll(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		repository := user_secondary_adapter.NewFakeUserRepository()
 		u := NewUserService(nil)

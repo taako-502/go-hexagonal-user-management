@@ -8,12 +8,12 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestUpdate(t *testing.T){
+func TestUpdate(t *testing.T) {
 	repository := user_secondary_adapter.NewFakeUserRepository()
 	u := NewUserService(nil)
-	user := &domain.User {
-		Username:  "hogepiyo",
-		Email:     "test@test.com",
+	user := &domain.User{
+		Username: "hogepiyo",
+		Email:    "test@test.com",
 	}
 	require.NoError(t, u.Update(repository, user))
 }

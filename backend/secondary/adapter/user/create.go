@@ -6,7 +6,7 @@ import (
 	"github.com/go-sql-driver/mysql"
 )
 
-func (a *userSecondaryAdapter)Create(user *domain.User) error {
+func (a *userSecondaryAdapter) Create(user *domain.User) error {
 	if err := a.Db.Create(user); err != nil {
 		mysqlErr, ok := err.Error.(*mysql.MySQLError)
 		if ok && mysqlErr.Number == 1062 {
@@ -15,6 +15,5 @@ func (a *userSecondaryAdapter)Create(user *domain.User) error {
 			return err.Error
 		}
 	}
-  return nil
+	return nil
 }
-
