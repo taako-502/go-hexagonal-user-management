@@ -1,6 +1,10 @@
 # go-hexagonal-user-management
 
-元の記事： https://ap-ep.com/go-hexagonal/
+## 概要
+
+Go 言語でヘキサゴナルアーキテクチャを実装したサンプルアプリケーションです。
+
+記事： https://ap-ep.com/go-hexagonal/
 
 ## バックエンド
 
