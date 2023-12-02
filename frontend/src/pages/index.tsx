@@ -1,3 +1,6 @@
+import DeleteButton from '@/components/DeleteButton'
+import SaveButton from '@/components/SaveButton'
+import UpdateButton from '@/components/updateButton'
 import useRepository from '@/hooks/useRepository'
 import { User } from '@/type/user.type'
 import axios from 'axios'
@@ -147,12 +150,7 @@ export default function Home() {
           />
         </div>
         <div className="text-red-500">{error}</div>
-        <button
-          className="bg-blue-500 text-white cursor-pointer rounded-md p-2 mt-[1em]"
-          onClick={newUser}
-        >
-          save
-        </button>
+        <SaveButton onClick={newUser} />
       </form>
       <ul>
         {Object.keys(newUsers)
@@ -216,21 +214,19 @@ export default function Home() {
                   {editMode.get(newUsers[key].id as number) ? 'Cancel' : 'Edit'}
                 </button>
                 {editMode.get(newUsers[key].id as number) && (
-                  <button
-                    className="bg-gray-500 rounded-md px-1 py-[2px] ml-[1em]"
-                    onClick={() => update(newUsers[key].id as number)}
-                  >
-                    Update
-                  </button>
+                  <UpdateButton
+                    id={newUsers[key].id as number}
+                    onClick={update}
+                  />
                 )}
-                <button
-                  className="bg-gray-500 rounded-md px-1 py-[2px] ml-[1em]"
-                  onClick={() => {
-                    userDelete(newUsers[key].id as number)
-                  }}
-                >
-                  Delete
-                </button>
+                {editMode.get(newUsers[key].id as number) ? (
+                  <></>
+                ) : (
+                  <DeleteButton
+                    id={newUsers[key].id as number}
+                    onClick={userDelete}
+                  />
+                )}
               </pre>
             </li>
           ))}
