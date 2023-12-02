@@ -1,5 +1,7 @@
+import useRepository from '@/hooks/useAxios'
 import useAxios from '@/hooks/useAxios'
 import { User } from '@/type/user.type'
+import axios from 'axios'
 import { Fragment, useEffect, useState } from 'react'
 
 export default function Home() {
@@ -9,13 +11,12 @@ export default function Home() {
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const [editMode, setEditMode] = useState<Map<number, boolean>>(new Map())
-  const axiosInstance = useAxios()
+  const repository = useRepository()
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axiosInstance.get('/user')
-        const users: User[] = res.data
+        const users = await repository.user.findAll()
         setNewUsers(users)
         const editUsers: { [key: number]: User } = users.reduce(
           (acc, user) => ({
@@ -27,9 +28,12 @@ export default function Home() {
         setEditUsers(editUsers)
       } catch (error) {
         console.error(error)
-        if (error instanceof Error) {
-          console.error(error.message)
-          setError(error.message)
+        if (axios.isAxiosError(error) && error.response) {
+          // 404エラー以外はコンソールに出力する
+          if (error.response.status !== 404) {
+            console.error(error.message)
+            setError(error.message)
+          }
         }
       }
     }
@@ -39,7 +43,7 @@ export default function Home() {
   const newUser = async () => {
     const body: User = { username, email }
     try {
-      await axiosInstance.post('/user', body)
+      await repository.user.create(body)
       setUsername('')
       setEmail('')
       setError('')
@@ -55,12 +59,13 @@ export default function Home() {
   }
 
   const update = async (id: number) => {
-    const body: User = {
+    const user: User = {
+      id,
       username: editUsers[id].username || '',
       email: editUsers[id].email || '',
     }
     try {
-      await axiosInstance.patch(`/user/${id}`, body)
+      await repository.user.update(user)
       setUsername('')
       setEmail('')
       setError('')
@@ -68,7 +73,7 @@ export default function Home() {
       window.location.reload()
     } catch (error) {
       console.error(error)
-      if (error instanceof Error) {
+      if (axios.isAxiosError(error) && error.response) {
         console.error(error.message)
         setError(error.message)
       }
@@ -77,12 +82,12 @@ export default function Home() {
 
   const userDelete = async (id: number) => {
     try {
-      await axiosInstance.delete(`/user/${id}`)
+      await repository.user.delete(id)
       // 一旦画面をリロードする
       window.location.reload()
     } catch (error) {
       console.error(error)
-      if (error instanceof Error) {
+      if (axios.isAxiosError(error) && error.response) {
         console.error(error.message)
         setError(error.message)
       }

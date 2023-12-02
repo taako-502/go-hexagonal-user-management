@@ -9,10 +9,14 @@ import (
 )
 
 func FindAll(u user_service.UserService, a secondary_port.UserRepository) *echo.Echo {
-	u.Echo.GET("/user", func(c echo.Context) error {
+	u.Echo.GET("/users", func(c echo.Context) error {
 		users, err := u.FindAll(a)
 		if err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+			if err == user_service.UserNotFoundError {
+				return echo.NewHTTPError(http.StatusNotFound, err.Error())
+			} else {
+				return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+			}
 		}
 
 		var responses []UserResponse
