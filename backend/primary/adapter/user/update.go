@@ -11,7 +11,7 @@ import (
 )
 
 func Update(u user_service.UserService, a secondary_port.UserRepository) *echo.Echo {
-	u.Echo.PATCH("/user/:id", func(c echo.Context) error {
+	u.Echo.PUT("/user/:id", func(c echo.Context) error {
 		id, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, "ID must be an integer")
