@@ -1,5 +1,5 @@
-import useRepository from '@/hooks/useAxios'
-import useAxios from '@/hooks/useAxios'
+import useRepository from '@/hooks/useRepository'
+import useAxios from '@/hooks/useRepository'
 import { User } from '@/type/user.type'
 import axios from 'axios'
 import { Fragment, useEffect, useState } from 'react'
