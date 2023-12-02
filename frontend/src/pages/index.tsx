@@ -1,4 +1,6 @@
 import DeleteButton from '@/components/DeleteButton'
+import EmailEditInput from '@/components/EmaiEditlInput'
+import NameEditInput from '@/components/NameEditlInput'
 import SaveButton from '@/components/SaveButton'
 import UpdateButton from '@/components/updateButton'
 import useRepository from '@/hooks/useRepository'
@@ -161,43 +163,15 @@ export default function Home() {
               <pre className="mt-1">
                 {editMode.get(newUsers[key].id as number) ? (
                   <span>
-                    <label htmlFor="edit_username" className="mr-[2em]">
-                      Name:
-                    </label>
-                    <input
-                      id="edit_username"
-                      type="text"
-                      className="border bg-gray-600 border-gray-400 rounded-md p-2 mt-[8px]"
-                      value={
-                        editUsers[newUsers[key].id as number]?.username || ''
-                      }
-                      onChange={(e) =>
-                        setEditUsers({
-                          ...editUsers,
-                          [newUsers[key].id as number]: {
-                            ...editUsers[newUsers[key].id as number],
-                            username: e.target.value,
-                          },
-                        })
-                      }
+                    <NameEditInput
+                      userId={newUsers[key].id as number}
+                      editUsers={editUsers}
+                      setEditUsers={setEditUsers}
                     />
-                    <label htmlFor="edit_email" className="mr-[2em]">
-                      Email:
-                    </label>
-                    <input
-                      id="edit_email"
-                      type="text"
-                      className="border bg-gray-600 border-gray-400 rounded-md p-2 mt-[8px]"
-                      value={editUsers[newUsers[key].id as number]?.email || ''}
-                      onChange={(e) =>
-                        setEditUsers({
-                          ...editUsers,
-                          [newUsers[key].id as number]: {
-                            ...editUsers[newUsers[key].id as number],
-                            email: e.target.value,
-                          },
-                        })
-                      }
+                    <EmailEditInput
+                      userId={newUsers[key].id as number}
+                      editUsers={editUsers}
+                      setEditUsers={setEditUsers}
                     />
                   </span>
                 ) : (
