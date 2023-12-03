@@ -9,8 +9,8 @@ import (
 
 func (u UserService) FindAll(a secondary_port.UserRepository) ([]domain.User, error) {
 	users, err := a.FindAll()
-	if errors.Is(err, user_secondary_adapter.UserNotFoundError) {
-		return nil, UserNotFoundError
+	if errors.Is(err, user_secondary_adapter.ErrUserNotFound) {
+		return nil, ErrUserNotFound
 	} else if err != nil {
 		return nil, err
 	}

@@ -9,8 +9,8 @@ import (
 
 func (u UserService) Create(a secondary_port.UserRepository, user *domain.User) error {
 	if err := a.Create(user); err != nil {
-		if errors.Is(err, user_secondary_adapter.UserDuplicateError) {
-			return UserDuplicateError
+		if errors.Is(err, user_secondary_adapter.ErrUserDuplicate) {
+			return ErrUserDuplicate
 		} else {
 			return err
 		}

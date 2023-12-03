@@ -61,7 +61,7 @@ export default function Home() {
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         console.error(error.message)
-        setError(error.message)
+        setError(error.response.data.message)
       }
     }
   }
@@ -87,10 +87,9 @@ export default function Home() {
         },
       }))
     } catch (error) {
-      console.error(error)
       if (axios.isAxiosError(error) && error.response) {
         console.error(error.message)
-        setError(error.message)
+        setError(error.response.data.message)
       }
     }
   }
@@ -108,7 +107,7 @@ export default function Home() {
       console.error(error)
       if (axios.isAxiosError(error) && error.response) {
         console.error(error.message)
-        setError(error.message)
+        setError(error.response.data.message)
       }
     }
   }

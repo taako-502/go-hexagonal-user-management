@@ -19,14 +19,14 @@ func TestFindAll(t *testing.T) {
 	u := user_service.NewUserService(e)
 	fake := user_secondary_adapter.NewFakeUserRepository()
 	e = FindAll(u, fake)
-	req := httptest.NewRequest(http.MethodGet, "/user", nil)
+	req := httptest.NewRequest(http.MethodGet, "/users", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
-	c.SetPath("/user")
+	c.SetPath("/users")
 
 	t.Run("Success", func(t *testing.T) {
 		// ハンドラーを呼び出す
-		e.Router().Find(http.MethodGet, "/user", c)
+		e.Router().Find(http.MethodGet, "/users", c)
 		handler := c.Handler()
 		assert.NoError(t, handler(c))
 		// レスポンスを検証する

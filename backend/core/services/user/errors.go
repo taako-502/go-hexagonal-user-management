@@ -2,5 +2,5 @@ package user_service
 
 import "errors"
 
-var UserNotFoundError = errors.New("user not found error")
-var UserDuplicateError = errors.New("user duplicate error")
+var ErrUserNotFound = errors.New("ユーザが見つかりません。")
+var ErrUserDuplicate = errors.New("ユーザ名またはメールアドレスが他のユーザと重複しています。")

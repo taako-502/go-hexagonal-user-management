@@ -9,7 +9,7 @@ func (a *userSecondaryAdapter) FindAll() ([]domain.User, error) {
 		return nil, result.Error
 	}
 	if len(users) == 0 {
-		return nil, UserNotFoundError
+		return nil, ErrUserNotFound
 	}
 	return users, nil
 }

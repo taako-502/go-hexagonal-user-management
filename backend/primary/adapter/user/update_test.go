@@ -20,7 +20,7 @@ func TestUpdate(t *testing.T) {
 	fake := user_secondary_adapter.NewFakeUserRepository()
 	e = Update(u, fake)
 	reqJSON := `{"username": "test", "email": "test@example.com"}`
-	req := httptest.NewRequest(http.MethodPatch, "/user/1", bytes.NewBufferString(reqJSON))
+	req := httptest.NewRequest(http.MethodPut, "/user/1", bytes.NewBufferString(reqJSON))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
@@ -28,7 +28,7 @@ func TestUpdate(t *testing.T) {
 
 	t.Run("Success", func(t *testing.T) {
 		// ハンドラーを呼び出す
-		e.Router().Find(http.MethodPatch, "/user/1", c)
+		e.Router().Find(http.MethodPut, "/user/1", c)
 		handler := c.Handler()
 		assert.NoError(t, handler(c))
 		// レスポンスを検証する
