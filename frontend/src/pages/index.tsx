@@ -1,6 +1,8 @@
 import DeleteButton from '@/components/DeleteButton'
 import EmailEditInput from '@/components/EmaiEditlInput'
+import EmailInput from '@/components/EmailInput'
 import NameEditInput from '@/components/NameEditlInput'
+import NameInput from '@/components/NameInput'
 import SaveButton from '@/components/SaveButton'
 import UpdateButton from '@/components/updateButton'
 import useRepository from '@/hooks/useRepository'
@@ -128,28 +130,10 @@ export default function Home() {
       <h1 className="text-2xl">ユーザ管理画面</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="username" className="mr-[2em]">
-            ユーザ名:
-          </label>
-          <input
-            id="username"
-            type="text"
-            className="border bg-gray-600 border-gray-400 rounded-md p-2 mt-[8px]"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
+          <NameInput username={username} setUsername={setUsername} />
         </div>
         <div>
-          <label htmlFor="email" className="mr-[2em]">
-            メールアドレス:
-          </label>
-          <input
-            id="email"
-            type="email"
-            className="border bg-gray-600 border-gray-400 rounded-md p-2 mt-[8px]"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+          <EmailInput email={email} setEmail={setEmail} />
         </div>
         <div className="text-red-500">{error}</div>
         <SaveButton onClick={newUser} />
