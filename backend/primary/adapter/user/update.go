@@ -25,16 +25,15 @@ func Update(u user_service.UserService, a secondary_port.UserRepository) *echo.E
 		if err := c.Validate(request); err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, "validation error")
 		}
-		user := &user_model.User{
-			Id:       id,
-			Username: request.Username,
-			Email:    request.Email,
+		user, err := user_model.UpdateUser(id, request.Username, request.Email)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
 		if err := u.Update(a, user); err != nil {
 			if errors.Is(err, user_service.ErrUserDuplicate) {
 				return echo.NewHTTPError(http.StatusConflict, err.Error())
 			} else {
-			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+				return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 			}
 		}
 		return c.String(http.StatusOK, "OK")

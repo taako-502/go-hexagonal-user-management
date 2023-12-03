@@ -20,9 +20,9 @@ func Create(u user_service.UserService, a secondary_port.UserRepository) *echo.E
 		if err := c.Validate(request); err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, "validation error")
 		}
-		user := &user_model.User{
-			Username: request.Username,
-			Email:    request.Email,
+		user, err := user_model.NewUser(request.Username, request.Email)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
 		if err := u.Create(a, user); err != nil {
 			if errors.Is(err, user_service.ErrUserDuplicate) {
