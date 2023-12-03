@@ -1,42 +1,42 @@
 package user_secondary_adapter
 
 import (
-	"go-hexagonal-user-management/core/domain"
+	user_model "go-hexagonal-user-management/core/models"
 	secondary_port "go-hexagonal-user-management/secondary/port"
 )
 
 type fakeUserRepository struct {
-	insertUser  map[*domain.User]error
-	updateUser  map[*domain.User]error
-	findAllUser []domain.User
+	insertUser  map[*user_model.User]error
+	updateUser  map[*user_model.User]error
+	findAllUser []user_model.User
 	deleteUser  map[int]error
 }
 
 func NewFakeUserRepository() secondary_port.UserRepository {
 	return &fakeUserRepository{
-		insertUser:  map[*domain.User]error{},
-		updateUser:  map[*domain.User]error{},
-		findAllUser: []domain.User{},
+		insertUser:  map[*user_model.User]error{},
+		updateUser:  map[*user_model.User]error{},
+		findAllUser: []user_model.User{},
 		deleteUser:  map[int]error{},
 	}
 }
 
-func (r *fakeUserRepository) Create(u *domain.User) error {
+func (r *fakeUserRepository) Create(u *user_model.User) error {
 	if err := r.insertUser[u]; err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *fakeUserRepository) Update(u *domain.User) error {
+func (r *fakeUserRepository) Update(u *user_model.User) error {
 	if err := r.updateUser[u]; err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *fakeUserRepository) FindAll() ([]domain.User, error) {
-	users := []domain.User{
+func (r *fakeUserRepository) FindAll() ([]user_model.User, error) {
+	users := []user_model.User{
 		{Username: "test", Email: "test@test.com"},
 	}
 	return users, nil

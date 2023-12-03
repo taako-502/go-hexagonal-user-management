@@ -2,7 +2,7 @@ package user_primary_adapter
 
 import (
 	"errors"
-	"go-hexagonal-user-management/core/domain"
+	user_model "go-hexagonal-user-management/core/models"
 	user_service "go-hexagonal-user-management/core/services/user"
 	secondary_port "go-hexagonal-user-management/secondary/port"
 	"net/http"
@@ -25,7 +25,7 @@ func Update(u user_service.UserService, a secondary_port.UserRepository) *echo.E
 		if err := c.Validate(request); err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, "validation error")
 		}
-		user := &domain.User{
+		user := &user_model.User{
 			Id:       id,
 			Username: request.Username,
 			Email:    request.Email,

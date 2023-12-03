@@ -1,7 +1,7 @@
 package user_service
 
 import (
-	"go-hexagonal-user-management/core/domain"
+	user_model "go-hexagonal-user-management/core/models"
 	user_secondary_adapter "go-hexagonal-user-management/secondary/adapter/user"
 	"testing"
 
@@ -11,7 +11,7 @@ import (
 func TestCreate(t *testing.T) {
 	repository := user_secondary_adapter.NewFakeUserRepository()
 	u := NewUserService(nil)
-	user := &domain.User{
+	user := &user_model.User{
 		Username: "hogepiyo",
 		Email:    "test@test.com",
 	}

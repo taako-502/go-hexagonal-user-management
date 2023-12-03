@@ -2,7 +2,7 @@ package user_primary_adapter
 
 import (
 	"encoding/json"
-	"go-hexagonal-user-management/core/domain"
+	user_model "go-hexagonal-user-management/core/models"
 	user_service "go-hexagonal-user-management/core/services/user"
 	user_secondary_adapter "go-hexagonal-user-management/secondary/adapter/user"
 	"net/http"
@@ -31,7 +31,7 @@ func TestFindAll(t *testing.T) {
 		assert.NoError(t, handler(c))
 		// レスポンスを検証する
 		assert.Equal(t, http.StatusOK, rec.Code)
-		var users []domain.User
+		var users []user_model.User
 		assert.NoError(t, json.Unmarshal(rec.Body.Bytes(), &users))
 		assert.EqualValues(t, 1, len(users))
 		assert.Equal(t, "test", users[0].Username)
