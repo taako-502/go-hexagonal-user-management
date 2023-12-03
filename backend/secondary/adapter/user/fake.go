@@ -3,6 +3,8 @@ package user_secondary_adapter
 import (
 	user_model "go-hexagonal-user-management/core/models"
 	secondary_port "go-hexagonal-user-management/secondary/port"
+
+	"github.com/pkg/errors"
 )
 
 type fakeUserRepository struct {
@@ -23,14 +25,14 @@ func NewFakeUserRepository() secondary_port.UserRepository {
 
 func (r *fakeUserRepository) Create(u *user_model.User) error {
 	if err := r.insertUser[u]; err != nil {
-		return err
+		return errors.Wrap(err, "fakeUserRepository.insertUser")
 	}
 	return nil
 }
 
 func (r *fakeUserRepository) Update(u *user_model.User) error {
 	if err := r.updateUser[u]; err != nil {
-		return err
+		return errors.Wrap(err, "fakeUserRepository.updateUser")
 	}
 	return nil
 }
@@ -44,7 +46,7 @@ func (r *fakeUserRepository) FindAll() ([]user_model.User, error) {
 
 func (r *fakeUserRepository) Delete(id int) error {
 	if err := r.deleteUser[id]; err != nil {
-		return err
+		return errors.Wrap(err, "fakeUserRepository.deleteUser")
 	}
 	return nil
 }
