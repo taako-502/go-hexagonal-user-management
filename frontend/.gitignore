@@ -4,11 +4,10 @@
 /node_modules
 /.pnp
 .pnp.js
+.yarn/install-state.gz
 
-# Yarn v3 ( berry )
-# https://yarnpkg.com/getting-started/qa
+# yarn
 .yarn/*
-!.yarn/cache
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
