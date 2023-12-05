@@ -50,13 +50,13 @@ export default function Home() {
   const newUser = async () => {
     const body: User = { username, email }
     try {
-      await repository.user.create(body)
+      const user = await repository.user.create(body)
       setUsername('')
       setEmail('')
       setError('')
       setNewUsers((prev) => ({
         ...prev,
-        [Object.keys(prev).length]: body,
+        [Object.keys(prev).length]: user,
       }))
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

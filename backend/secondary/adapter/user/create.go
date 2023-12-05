@@ -7,13 +7,13 @@ import (
 	"github.com/pkg/errors"
 )
 
-func (a *userSecondaryAdapter) Create(user *user_model.User) error {
+func (a *userSecondaryAdapter) Create(user *user_model.User) (*user_model.User, error) {
 	if err := a.Db.Create(user).Error; err != nil {
 		if mysqlErr, ok := err.(*mysql.MySQLError); ok && mysqlErr.Number == 1062 {
-			return errors.Wrap(ErrUserDuplicate, "gorm.Create")
+			return nil, errors.Wrap(ErrUserDuplicate, "gorm.Create")
 		} else {
-			return errors.Wrap(err, "gorm.Create")
+			return nil, errors.Wrap(err, "gorm.Create")
 		}
 	}
-	return nil
+	return user, nil
 }

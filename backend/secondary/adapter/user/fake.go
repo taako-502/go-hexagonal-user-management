@@ -23,11 +23,13 @@ func NewFakeUserRepository() secondary_port.UserRepository {
 	}
 }
 
-func (r *fakeUserRepository) Create(u *user_model.User) error {
+func (r *fakeUserRepository) Create(u *user_model.User) (*user_model.User, error) {
 	if err := r.insertUser[u]; err != nil {
-		return errors.Wrap(err, "fakeUserRepository.insertUser")
+		return nil, errors.Wrap(err, "fakeUserRepository.insertUser")
 	}
-	return nil
+	return &user_model.User{
+		Id: 999,
+	}, nil
 }
 
 func (r *fakeUserRepository) Update(u *user_model.User) error {

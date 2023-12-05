@@ -11,7 +11,7 @@ import (
 func (u UserService) FindAll(a secondary_port.UserRepository) ([]user_model.User, error) {
 	users, err := a.FindAll()
 	if errors.Is(err, user_secondary_adapter.ErrUserNotFound) {
-		return nil, errors.Wrap(ErrUserDuplicate, "user_secondary_adapter.FindAll")
+		return nil, errors.Wrap(ErrUserNotFound, "user_secondary_adapter.FindAll")
 	} else if err != nil {
 		return nil, errors.Wrap(err, "user_secondary_adapter.FindAll")
 	}

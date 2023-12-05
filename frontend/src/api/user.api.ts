@@ -1,4 +1,4 @@
-import { User, isUsersType } from '@/type/user.type'
+import { User, isUserType, isUsersType } from '@/type/user.type'
 import { AxiosInstance } from 'axios'
 
 class UserRepository {
@@ -10,15 +10,14 @@ class UserRepository {
 
   findAll = async (): Promise<User[]> => {
     const response = await this.axios.get('/users')
-    if (isUsersType(response.data)) {
-      return response.data
-    } else {
-      throw Error('API Error')
-    }
+    if (isUsersType(response.data)) return response.data
+    throw Error('API Error')
   }
 
-  create = async (user: User) => {
-    await this.axios.post('/user', user)
+  create = async (user: User): Promise<User> => {
+    const response = await this.axios.post('/user', user)
+    if (isUserType(response.data)) return response.data
+    throw Error('API Error')
   }
 
   update = async (user: User) => {

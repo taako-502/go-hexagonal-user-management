@@ -24,14 +24,20 @@ func Create(u user_service.UserService, a secondary_port.UserRepository) *echo.E
 		if err != nil {
 			return echo.NewHTTPError(http.StatusBadRequest, err.Error())
 		}
-		if err := u.Create(a, user); err != nil {
+		user, err = u.Create(a, user)
+		if err != nil {
 			if errors.Is(err, user_service.ErrUserDuplicate) {
 				return echo.NewHTTPError(http.StatusConflict, err.Error())
 			} else {
 				return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 			}
 		}
-		return c.String(http.StatusOK, "OK")
+		responses := &UserResponse{
+			Id:       user.Id,
+			Username: user.Username,
+			Email:    user.Email,
+		}
+		return c.JSON(http.StatusOK, responses)
 	})
 
 	return u.Echo

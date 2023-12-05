@@ -1,6 +1,7 @@
 package user_primary_adapter
 
 import (
+	"errors"
 	user_service "go-hexagonal-user-management/core/services/user"
 	secondary_port "go-hexagonal-user-management/secondary/port"
 	"net/http"
@@ -12,7 +13,7 @@ func FindAll(u user_service.UserService, a secondary_port.UserRepository) *echo.
 	u.Echo.GET("/users", func(c echo.Context) error {
 		users, err := u.FindAll(a)
 		if err != nil {
-			if err == user_service.ErrUserNotFound {
+			if errors.Is(err, user_service.ErrUserNotFound) {
 				return echo.NewHTTPError(http.StatusNotFound, err.Error())
 			} else {
 				return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
