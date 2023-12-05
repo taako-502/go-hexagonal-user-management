@@ -2,10 +2,10 @@ import useRepository from '@/hooks/useRepository'
 import { User } from '@/type/user.type'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import DeleteButton from './DeleteButton'
-import EmailEditInput from './EmaiEditlInput'
-import NameEditInput from './NameEditlInput'
-import UpdateButton from './UpdateButton'
+import DeleteButton from './buttons/DeleteButton'
+import EmailEditInput from './inputs/EmaiEditlInput'
+import NameEditInput from './inputs/NameEditlInput'
+import UpdateButton from './buttons/UpdateButton'
 
 type Props = {
   clear: () => void
