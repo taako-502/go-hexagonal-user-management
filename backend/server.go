@@ -34,12 +34,13 @@ func main() {
 	// ルーティング（https://echo.labstack.com/docs/routing）
 	// TODO: ルーティングの設定を別ファイルに移動する
 	db := dbInit()
-	userSecvice := user_service.UserService{Echo: e}
-	userSecondaryAdapter := user_secondary_adapter.NewUserSecondaryAdapter(db)
-	e = user_primary_adapter.Create(userSecvice, userSecondaryAdapter)
-	e = user_primary_adapter.Update(userSecvice, userSecondaryAdapter)
-	e = user_primary_adapter.FindAll(userSecvice, userSecondaryAdapter)
-	e = user_primary_adapter.Delete(userSecvice, userSecondaryAdapter)
+
+	// net/http 用のルータ作成
+	mux := http.NewServeMux()
+	mux.Handle("GET /users", user_primary_adapter.FindAll(userService, userRepo))
+	mux.Handle("POST /user", user_primary_adapter.Create(userService, userRepo))
+	mux.Handle("PUT /user/:id", user_primary_adapter.Update(userService, userRepo))
+	mux.Handle("DELETE /user/:id", user_primary_adapter.Delete(userService, userRepo))
 	// サーバー起動
 	e.Logger.Fatal(e.Start(":1323"))
 }
@@ -47,7 +48,7 @@ func main() {
 func loadEnv() {
 	err := godotenv.Load(".env")
 	if err != nil {
-		fmt.Printf("読み込み出来ませんでした: %v", err)
+		fmt.Errorf("読み込み出来ませんでした: %v\n", err)
 	}
 }
 

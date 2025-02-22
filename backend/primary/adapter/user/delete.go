@@ -5,20 +5,19 @@ import (
 	secondary_port "go-hexagonal-user-management/secondary/port"
 	"net/http"
 	"strconv"
-
-	"github.com/labstack/echo/v4"
 )
 
-func Delete(u user_service.UserService, a secondary_port.UserRepository) *echo.Echo {
-	u.Echo.DELETE("/user/:id", func(c echo.Context) error {
-		id, err := strconv.Atoi(c.Param("id"))
+func Delete(u user_service.UserService, a secondary_port.UserRepository) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		id, err := strconv.Atoi(r.PathValue("id"))
 		if err != nil {
-			return echo.NewHTTPError(http.StatusBadRequest, "ID must be an integer")
+			http.Error(w, "ID must be an integer", http.StatusBadRequest)
+			return
 		}
 		if err := u.Delete(a, id); err != nil {
-			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
 		}
-		return c.String(http.StatusOK, "OK")
+		w.WriteHeader(http.StatusNoContent)
 	})
-	return u.Echo
 }
