@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	user_service "go-hexagonal-user-management/core/services/user"
-	user_primary_adapter "go-hexagonal-user-management/primary/adapter/user"
-	user_secondary_adapter "go-hexagonal-user-management/secondary/adapter/user"
+	"go-hexagonal-user-management/core/services/user_service"
+	"go-hexagonal-user-management/primary/adapter/user_primary_adapter"
+	"go-hexagonal-user-management/secondary/adapter/user_secondary_adapter"
 	"log"
 	"net/http"
 	"os"
