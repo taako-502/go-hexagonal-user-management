@@ -7,7 +7,6 @@ require (
 	github.com/go-sql-driver/mysql v1.7.0
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v4 v4.11.2
-	github.com/pkg/errors v0.9.1
 	github.com/rubenv/sql-migrate v1.7.1
 	github.com/stretchr/testify v1.8.4
 	gorm.io/driver/mysql v1.5.7

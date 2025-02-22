@@ -1,9 +1,10 @@
 package user_model
 
 import (
+	"fmt"
 	"strings"
 
-	"github.com/pkg/errors"
+	"errors"
 )
 
 type User struct {
@@ -14,11 +15,11 @@ type User struct {
 
 func NewUser(username, email string) (*User, error) {
 	if strings.TrimSpace(username) == "" {
-		return nil, errors.Wrapf(errors.New("username cannot be blank"), "strings.TrimSpace(%s)", username)
+		return nil, fmt.Errorf("username cannot be blank, strings.TrimSpace(%s)", username)
 	}
 
 	if strings.TrimSpace(email) == "" {
-		return nil, errors.Wrapf(errors.New("email cannot be blank"), "strings.TrimSpace(%s)", email)
+		return nil, fmt.Errorf("email cannot be blank, strings.TrimSpace(%s)", email)
 	}
 
 	return &User{
@@ -33,11 +34,11 @@ func UpdateUser(id int, username, email string) (*User, error) {
 	}
 
 	if strings.TrimSpace(username) == "" {
-		return nil, errors.Wrapf(errors.New("username cannot be blank"), "strings.TrimSpace(%s)", username)
+		return nil, fmt.Errorf("username cannot be blank, strings.TrimSpace(%s)", username)
 	}
 
 	if strings.TrimSpace(email) == "" {
-		return nil, errors.Wrapf(errors.New("email cannot be blank"), "strings.TrimSpace(%s)", email)
+		return nil, fmt.Errorf("email cannot be blank, strings.TrimSpace(%s)", email)
 	}
 
 	return &User{

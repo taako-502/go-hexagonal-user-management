@@ -1,10 +1,9 @@
 package user_secondary_adapter
 
 import (
+	"fmt"
 	user_model "go-hexagonal-user-management/core/models"
 	secondary_port "go-hexagonal-user-management/secondary/port"
-
-	"github.com/pkg/errors"
 )
 
 type fakeUserRepository struct {
@@ -25,7 +24,7 @@ func NewFakeUserRepository() secondary_port.UserRepository {
 
 func (r *fakeUserRepository) Create(u *user_model.User) (*user_model.User, error) {
 	if err := r.insertUser[u]; err != nil {
-		return nil, errors.Wrap(err, "fakeUserRepository.insertUser")
+		return nil, fmt.Errorf("fakeUserRepository.insertUser: %w", err)
 	}
 	return &user_model.User{
 		Id: 999,
@@ -34,7 +33,7 @@ func (r *fakeUserRepository) Create(u *user_model.User) (*user_model.User, error
 
 func (r *fakeUserRepository) Update(u *user_model.User) error {
 	if err := r.updateUser[u]; err != nil {
-		return errors.Wrap(err, "fakeUserRepository.updateUser")
+		return fmt.Errorf("fakeUserRepository.updateUser: %w", err)
 	}
 	return nil
 }
@@ -48,7 +47,7 @@ func (r *fakeUserRepository) FindAll() ([]user_model.User, error) {
 
 func (r *fakeUserRepository) Delete(id int) error {
 	if err := r.deleteUser[id]; err != nil {
-		return errors.Wrap(err, "fakeUserRepository.deleteUser")
+		return fmt.Errorf("fakeUserRepository.deleteUser: %w", err)
 	}
 	return nil
 }
