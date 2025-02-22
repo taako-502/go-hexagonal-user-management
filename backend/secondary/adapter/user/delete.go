@@ -7,8 +7,8 @@ import (
 
 func (a *userSecondaryAdapter) Delete(id int) error {
 	user := &user_model.User{Id: id}
-	if err := a.Db.Delete(user); err != nil {
-		return fmt.Errorf("gorm.Delete: %w", err.Error)
+	if err := a.Db.Delete(user).Error; err != nil {
+		return fmt.Errorf("gorm.Delete: %w", err)
 	}
 	return nil
 }

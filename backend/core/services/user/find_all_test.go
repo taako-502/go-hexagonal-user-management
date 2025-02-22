@@ -10,7 +10,7 @@ import (
 func TestFindAll(t *testing.T) {
 	t.Run("Success", func(t *testing.T) {
 		repository := user_secondary_adapter.NewFakeUserRepository()
-		u := NewUserService(nil)
+		u := NewUserService()
 		result, err := u.FindAll(repository)
 		require.NoError(t, err)
 		require.Len(t, result, 1)

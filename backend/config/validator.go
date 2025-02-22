@@ -1,6 +1,6 @@
 package config
 
-import "github.com/go-playground/validator"
+import "github.com/go-playground/validator/v10"
 
 type CustomValidator struct {
 	Validator *validator.Validate

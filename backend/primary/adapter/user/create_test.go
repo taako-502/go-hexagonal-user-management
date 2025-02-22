@@ -2,36 +2,48 @@ package user_primary_adapter
 
 import (
 	"bytes"
+	"encoding/json"
 	user_service "go-hexagonal-user-management/core/services/user"
-	primary_adapter "go-hexagonal-user-management/primary/adapter"
 	user_secondary_adapter "go-hexagonal-user-management/secondary/adapter/user"
+	secondary_port "go-hexagonal-user-management/secondary/port"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
-	"github.com/labstack/echo/v4"
-	"github.com/stretchr/testify/assert"
+	"github.com/go-playground/validator/v10"
 )
 
-func TestCreate(t *testing.T) {
-	// Setup
-	e := primary_adapter.SetupEchoForTest()
-	u := user_service.NewUserService(e)
+func TestUserPrimaryAdapter_Create(t *testing.T) {
+	u := user_service.NewUserService()
 	fake := user_secondary_adapter.NewFakeUserRepository()
-	e = Create(u, fake)
-	reqJSON := `{"username": "test", "email": "test@example.com"}`
-	req := httptest.NewRequest(http.MethodPost, "/user", bytes.NewBufferString(reqJSON))
-	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
-	rec := httptest.NewRecorder()
-	c := e.NewContext(req, rec)
-	c.SetPath("/user")
+	pa := NewUserPrimaryAdapter(validator.New())
+	type args struct {
+		u  user_service.UserService
+		ur secondary_port.UserRepository
+	}
+	tests := []struct {
+		name       string
+		args       args
+		body       UserRequest
+		wantStatus int
+	}{
+		{
+			name:       "Success",
+			args:       args{u: u, ur: fake},
+			wantStatus: http.StatusOK,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			handler := pa.Create(tt.args.u, tt.args.ur)
+			jsonBody, _ := json.Marshal(tt.body)
+			request := httptest.NewRequest(http.MethodGet, "/", bytes.NewBuffer(jsonBody))
+			response := httptest.NewRecorder()
+			handler.ServeHTTP(response, request)
 
-	t.Run("Success", func(t *testing.T) {
-		// ハンドラーを呼び出す
-		e.Router().Find(http.MethodPost, "/user", c)
-		handler := c.Handler()
-		assert.NoError(t, handler(c))
-		// レスポンスを検証する
-		assert.Equal(t, http.StatusOK, rec.Code)
-	})
+			if status := response.Code; status != tt.wantStatus {
+				t.Errorf("Handler.Add() status = %v, want %v", status, tt.wantStatus)
+			}
+		})
+	}
 }
