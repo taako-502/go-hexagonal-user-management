@@ -17,5 +17,5 @@ func TestCreate(t *testing.T) {
 	}
 	user, err := u.Create(repository, user)
 	require.NoError(t, err)
-	require.EqualValues(t, 999, user.Id)
+	require.EqualValues(t, 999, user.ID)
 }

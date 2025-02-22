@@ -35,7 +35,7 @@ func (a *UserPrimaryAdapter) Create(u user_service.UserService, ur secondary_por
 			return
 		}
 		response := &UserResponse{
-			Id:       user.Id,
+			ID:       user.ID,
 			Username: user.Username,
 			Email:    user.Email,
 		}

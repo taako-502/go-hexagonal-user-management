@@ -8,7 +8,7 @@ import (
 )
 
 type User struct {
-	Id       int
+	ID       int
 	Username string
 	Email    string
 }
@@ -42,7 +42,7 @@ func UpdateUser(id int, username, email string) (*User, error) {
 	}
 
 	return &User{
-		Id:       id,
+		ID:       id,
 		Username: username,
 		Email:    email,
 	}, nil

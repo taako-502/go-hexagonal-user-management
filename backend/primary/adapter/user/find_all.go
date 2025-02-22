@@ -23,7 +23,7 @@ func (a *UserPrimaryAdapter) FindAll(u user_service.UserService, ur secondary_po
 		var responses []UserResponse
 		for _, user := range users {
 			responses = append(responses, UserResponse{
-				Id:       user.Id,
+				ID:       user.ID,
 				Username: user.Username,
 				Email:    user.Email,
 			})
