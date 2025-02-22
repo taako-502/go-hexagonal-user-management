@@ -4,14 +4,14 @@
 
 `dev`と言う名前のデータベースをあらかじめ作成しておく。
 
-sql-migrate のインストールが必要かもしれない。
-
-```bash
-go install github.com/rubenv/sql-migrate/...@latest
-```
-
 ```sql
 CREATE DATABASE dev
+```
+
+最初のマイグレーションを実行する。
+
+```bash
+sql-migrate up
 ```
 
 ## sql-migrate

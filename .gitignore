@@ -3,3 +3,4 @@ backend/tmp/build-errors.log
 backend/main
 backend/tmp/main
 backend/go-hexagonal-user-management
+.DS_Store
