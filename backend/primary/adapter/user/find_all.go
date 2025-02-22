@@ -8,9 +8,9 @@ import (
 	"net/http"
 )
 
-func (a *UserPrimaryAdapter) FindAll(u user_service.UserService, ar secondary_port.UserRepository) http.Handler {
+func (a *UserPrimaryAdapter) FindAll(u user_service.UserService, ur secondary_port.UserRepository) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		users, err := u.FindAll(ar)
+		users, err := u.FindAll(ur)
 		if err != nil {
 			if errors.Is(err, user_service.ErrUserNotFound) {
 				http.Error(w, err.Error(), http.StatusNotFound)
