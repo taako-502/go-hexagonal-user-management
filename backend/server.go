@@ -38,8 +38,8 @@ func main() {
 	handler := corsMiddleware(mux)
 
 	// サーバー起動
-	fmt.Println("Server running on :1323")
-	log.Fatal(http.ListenAndServe(":1323", handler))
+	fmt.Println("Server running on :8080")
+	log.Fatal(http.ListenAndServe(":8080", handler))
 }
 
 func loadEnv() error {

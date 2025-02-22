@@ -4,7 +4,7 @@ services:
     container_name: echo_server
     build: .
     ports:
-      - "1323:1323"
+      - "8080:8080"
     volumes:
       - ./backend:/app
       - ./.env:/app/.env
