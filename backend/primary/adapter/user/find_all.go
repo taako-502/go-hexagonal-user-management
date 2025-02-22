@@ -1,34 +1,38 @@
 package user_primary_adapter
 
 import (
+	"encoding/json"
 	"errors"
 	user_service "go-hexagonal-user-management/core/services/user"
 	secondary_port "go-hexagonal-user-management/secondary/port"
 	"net/http"
-
-	"github.com/labstack/echo/v4"
 )
 
-func FindAll(u user_service.UserService, a secondary_port.UserRepository) *echo.Echo {
-	u.Echo.GET("/users", func(c echo.Context) error {
-		users, err := u.FindAll(a)
+func (a *UserPrimaryAdapter) FindAll(u user_service.UserService, ur secondary_port.UserRepository) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		users, err := u.FindAll(ur)
 		if err != nil {
 			if errors.Is(err, user_service.ErrUserNotFound) {
-				return echo.NewHTTPError(http.StatusNotFound, err.Error())
+				http.Error(w, err.Error(), http.StatusNotFound)
 			} else {
-				return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+				http.Error(w, err.Error(), http.StatusInternalServerError)
 			}
+			return
 		}
 
 		var responses []UserResponse
 		for _, user := range users {
 			responses = append(responses, UserResponse{
-				Id:       user.Id,
+				ID:       user.ID,
 				Username: user.Username,
 				Email:    user.Email,
 			})
 		}
-		return c.JSON(http.StatusOK, responses)
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		if err := json.NewEncoder(w).Encode(responses); err != nil {
+			http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+			return
+		}
 	})
-	return u.Echo
 }

@@ -2,39 +2,67 @@ package user_primary_adapter
 
 import (
 	"encoding/json"
-	user_model "go-hexagonal-user-management/core/models"
-	user_service "go-hexagonal-user-management/core/services/user"
-	user_secondary_adapter "go-hexagonal-user-management/secondary/adapter/user"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"testing"
 
-	"github.com/labstack/echo/v4"
-	"github.com/stretchr/testify/assert"
+	"github.com/go-playground/validator/v10"
+
+	user_service "go-hexagonal-user-management/core/services/user"
+	user_secondary_adapter "go-hexagonal-user-management/secondary/adapter/user"
+	secondary_port "go-hexagonal-user-management/secondary/port"
 )
 
-func TestFindAll(t *testing.T) {
-	// Setup
-	e := echo.New()
-	u := user_service.NewUserService(e)
+func TestUserPrimaryAdapter_FindAll(t *testing.T) {
+	a := NewUserPrimaryAdapter(validator.New())
+	u := user_service.NewUserService()
 	fake := user_secondary_adapter.NewFakeUserRepository()
-	e = FindAll(u, fake)
-	req := httptest.NewRequest(http.MethodGet, "/users", nil)
-	rec := httptest.NewRecorder()
-	c := e.NewContext(req, rec)
-	c.SetPath("/users")
 
-	t.Run("Success", func(t *testing.T) {
-		// ハンドラーを呼び出す
-		e.Router().Find(http.MethodGet, "/users", c)
-		handler := c.Handler()
-		assert.NoError(t, handler(c))
-		// レスポンスを検証する
-		assert.Equal(t, http.StatusOK, rec.Code)
-		var users []user_model.User
-		assert.NoError(t, json.Unmarshal(rec.Body.Bytes(), &users))
-		assert.EqualValues(t, 1, len(users))
-		assert.Equal(t, "test", users[0].Username)
-		assert.Equal(t, "test@test.com", users[0].Email)
-	})
+	type args struct {
+		u  user_service.UserService
+		ur secondary_port.UserRepository
+	}
+	tests := []struct {
+		name       string
+		args       args
+		want       []UserResponse
+		wantStatus int
+	}{
+		{
+			name: "Success",
+			args: args{u: u, ur: fake},
+			want: []UserResponse{
+				{ID: 1, Username: "user1", Email: "user1@example.com"},
+				{ID: 2, Username: "user2", Email: "user2@example.com"},
+			},
+			wantStatus: http.StatusOK,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			req, err := http.NewRequest("GET", "/users", nil)
+			if err != nil {
+				t.Fatal(err)
+			}
+			rr := httptest.NewRecorder()
+			handler := a.FindAll(tt.args.u, tt.args.ur)
+			handler.ServeHTTP(rr, req)
+
+			if status := rr.Code; status != tt.wantStatus {
+				t.Errorf("status code got %v, want %v", status, tt.wantStatus)
+			}
+
+			var actual []UserResponse
+			if err := json.Unmarshal(rr.Body.Bytes(), &actual); err != nil {
+				t.Fatalf("failed to unmarshal response: %v", err)
+			}
+
+			// 期待値と実際のレスポンスを比較
+			if !reflect.DeepEqual(actual, tt.want) {
+				t.Errorf("unexpected response: got %+v, want %+v", actual, tt.want)
+			}
+		})
+	}
 }

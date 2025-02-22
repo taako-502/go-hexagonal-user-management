@@ -10,12 +10,12 @@ import (
 
 func TestCreate(t *testing.T) {
 	repository := user_secondary_adapter.NewFakeUserRepository()
-	u := NewUserService(nil)
+	u := NewUserService()
 	user := &user_model.User{
 		Username: "hogepiyo",
 		Email:    "test@test.com",
 	}
 	user, err := u.Create(repository, user)
 	require.NoError(t, err)
-	require.EqualValues(t, 999, user.Id)
+	require.EqualValues(t, 999, user.ID)
 }

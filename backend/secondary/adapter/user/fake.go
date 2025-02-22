@@ -15,10 +15,13 @@ type fakeUserRepository struct {
 
 func NewFakeUserRepository() secondary_port.UserRepository {
 	return &fakeUserRepository{
-		insertUser:  map[*user_model.User]error{},
-		updateUser:  map[*user_model.User]error{},
-		findAllUser: []user_model.User{},
-		deleteUser:  map[int]error{},
+		insertUser: map[*user_model.User]error{},
+		updateUser: map[*user_model.User]error{},
+		findAllUser: []user_model.User{
+			{ID: 1, Username: "user1", Email: "user1@example.com"},
+			{ID: 2, Username: "user2", Email: "user2@example.com"},
+		},
+		deleteUser: map[int]error{},
 	}
 }
 
@@ -27,7 +30,7 @@ func (r *fakeUserRepository) Create(u *user_model.User) (*user_model.User, error
 		return nil, fmt.Errorf("fakeUserRepository.insertUser: %w", err)
 	}
 	return &user_model.User{
-		Id: 999,
+		ID: 999,
 	}, nil
 }
 
@@ -39,10 +42,7 @@ func (r *fakeUserRepository) Update(u *user_model.User) error {
 }
 
 func (r *fakeUserRepository) FindAll() ([]user_model.User, error) {
-	users := []user_model.User{
-		{Username: "test", Email: "test@test.com"},
-	}
-	return users, nil
+	return r.findAllUser, nil
 }
 
 func (r *fakeUserRepository) Delete(id int) error {
