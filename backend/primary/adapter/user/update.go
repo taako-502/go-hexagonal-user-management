@@ -40,6 +40,6 @@ func (a *UserPrimaryAdapter) Update(u user_service.UserService, ur secondary_por
 			return
 		}
 
-		w.WriteHeader(http.StatusOK)
+		w.WriteHeader(http.StatusNoContent)
 	})
 }

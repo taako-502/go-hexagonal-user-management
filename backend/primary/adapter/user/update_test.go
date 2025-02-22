@@ -4,8 +4,12 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
+
 	user_service "go-hexagonal-user-management/core/services/user"
+
 	user_secondary_adapter "go-hexagonal-user-management/secondary/adapter/user"
+
 	secondary_port "go-hexagonal-user-management/secondary/port"
 	"net/http"
 	"net/http/httptest"
@@ -34,7 +38,9 @@ func TestUserPrimaryAdapter_Update(t *testing.T) {
 		{
 			name:       "Success",
 			args:       args{u: u, ur: fake},
-			wantStatus: http.StatusOK,
+			ID:         1,
+			body:       UserRequest{Username: "hogepiyo", Email: "test@test.com"},
+			wantStatus: http.StatusNoContent,
 		},
 	}
 	for _, tt := range tests {
@@ -42,11 +48,11 @@ func TestUserPrimaryAdapter_Update(t *testing.T) {
 			body, err := json.Marshal(tt.body)
 			require.NoError(t, err)
 
-			req, err := http.NewRequest(http.MethodPatch, "/"+string(tt.ID), bytes.NewReader(body))
+			req, err := http.NewRequest(http.MethodGet, "/"+fmt.Sprint(tt.ID), bytes.NewReader(body))
 			require.NoError(t, err)
 
 			router := http.NewServeMux()
-			router.Handle("PATCH /{id}", a.Update(tt.args.u, tt.args.ur))
+			router.Handle("GET /{id}", a.Update(tt.args.u, tt.args.ur))
 
 			rr := httptest.NewRecorder()
 			router.ServeHTTP(rr, req.WithContext(context.TODO()))

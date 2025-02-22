@@ -30,7 +30,8 @@ func TestUserPrimaryAdapter_Create(t *testing.T) {
 		{
 			name:       "Success",
 			args:       args{u: u, ur: fake},
-			wantStatus: http.StatusOK,
+			body:       UserRequest{Username: "hogepiyo", Email: "test@test.com"},
+			wantStatus: http.StatusCreated,
 		},
 	}
 	for _, tt := range tests {
